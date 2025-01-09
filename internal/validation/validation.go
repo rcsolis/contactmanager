@@ -5,7 +5,7 @@ import (
 )
 
 func isValidPhoneNumber(phoneNumber string) bool {
-	validPhoneNumber := regexp.MustCompile(`^\+[0-9]{2}-[0-9]{2}-[0-9]{4}-[0-9]{4}$`)
+	validPhoneNumber := regexp.MustCompile(`^\+[0-9]{2}-[0-9]{2}-[0-9]{8}$`)
 	return validPhoneNumber.MatchString(phoneNumber)
 }
 
@@ -20,4 +20,21 @@ func ValidateData(id string, name string, email string, phoneNumber string) bool
 
 func ValidateInput(query string) bool {
 	return query == ""
+}
+
+func ValidateUpdateData(id string, name string, email string, phoneNumber string) bool {
+	if id == "" {
+		return false
+	}
+	if email != "" {
+		if !isValidEmail(email) {
+			return false
+		}
+	}
+	if phoneNumber != "" {
+		if !isValidPhoneNumber(phoneNumber) {
+			return false
+		}
+	}
+	return true
 }

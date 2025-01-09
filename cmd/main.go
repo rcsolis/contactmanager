@@ -1,29 +1,39 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/rcsolis/contactmanager/internal/contact"
 )
 
 func menuOptions() {
-	fmt.Println("Select an option:")
+	fmt.Print(`
+****************************************
+*           Contact Manager            *
+****************************************
+`)
+	fmt.Println("--- Menu ---")
 	fmt.Println("1. Add contact")
 	fmt.Println("2. Get contact")
 	fmt.Println("3. List all contacts")
 	fmt.Println("4. Delete contact")
 	fmt.Println("5. Update Contact")
 	fmt.Println("6. Exit")
+	fmt.Print("Select an option:  ")
 }
 
 func createNewContact() {
 	var id, name, email, phoneNumber string
+	scanner := bufio.NewScanner(os.Stdin)
 	log.Println("--- Create New Contact ---")
 	fmt.Println("Enter id:")
 	fmt.Scanln(&id)
 	fmt.Println("Enter name:")
-	fmt.Scanln(&name)
+	scanner.Scan()
+	name = scanner.Text()
 	fmt.Println("Enter email:")
 	fmt.Scanln(&email)
 	fmt.Println("Enter phone number:")
@@ -44,6 +54,7 @@ func getContact() {
 		log.Print(err.Error())
 	}
 	fmt.Println("Contact details:")
+	fmt.Print("ID:", id)
 	fmt.Println("Name:", c.Name)
 	fmt.Println("Email:", c.Email)
 	fmt.Println("Phone number:", c.PhoneNumber)
@@ -73,11 +84,15 @@ func deleteContact() {
 
 func updateContact() {
 	var id, name, email, phoneNumber string
+	scanner := bufio.NewScanner(os.Stdin)
+
 	log.Println("--- Update Contact ---")
+	fmt.Println("(leave empty to keep the same)")
 	fmt.Println("Enter the contact id to update:")
 	fmt.Scanln(&id)
 	fmt.Println("Enter new name:")
-	fmt.Scanln(&name)
+	scanner.Scan()
+	name = scanner.Text()
 	fmt.Println("Enter new email:")
 	fmt.Scanln(&email)
 	fmt.Println("Enter new phone number:")
@@ -116,6 +131,8 @@ func main() {
 			updateContact()
 		case 6:
 			loop = false
+		default:
+			fmt.Println("Invalid option")
 		}
 	}
 	log.Print("Exiting...")

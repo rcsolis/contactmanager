@@ -30,12 +30,18 @@ func NewContact(id string, name string, email string, phoneNumber string) error 
 }
 
 func UpdateContact(id string, name string, email string, phoneNumber string) error {
-	if validation.ValidateData(id, name, email, phoneNumber) {
+	if validation.ValidateUpdateData(id, name, email, phoneNumber) {
 		if _, exists := ContactDB[id]; exists {
 			c := ContactDB[id]
-			c.Name = name
-			c.Email = email
-			c.PhoneNumber = phoneNumber
+			if name != "" {
+				c.Name = name
+			}
+			if email != "" {
+				c.Email = email
+			}
+			if phoneNumber != "" {
+				c.PhoneNumber = phoneNumber
+			}
 			ContactDB[id] = c
 			return nil
 		}
